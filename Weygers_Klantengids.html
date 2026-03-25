@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uw Onderhoudsgids</title>
+<style>
+:root{--cr:#faf8f4;--wh:#fff;--gr:#f2efe9;--bd:#e0dbd2;--bd2:#ede9e2;--tx:#1c1a17;--tx2:#6b6357;--tx3:#b0a898;--gn:#1a5c38;--gnm:#2a7a4e;--gnl:#e8f5ed;--gnb:#b8d8c4;--bl:#1a3d6b;--blm:#2358a0;--bll:#e8f0fb;--blb:#b0c8f0;--or:#7a3a00;--orl:#fff3e8;--orb:#f0c898;--rd:#8a1a1a;--rdl:#fdeaea;--rdb:#f0b8b8;--r:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cr);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;line-height:1.65}
+.hdr{background:var(--wh);border-bottom:1px solid var(--bd);padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.logo{font-size:19px;font-weight:700;letter-spacing:-.02em}
+.back-btn{font-size:13px;font-weight:500;background:var(--tx);color:#fff;border:none;padding:7px 16px;border-radius:20px;cursor:pointer;display:none}
+/* onboarding */
+.onb{max-width:700px;margin:0 auto;padding:56px 24px 40px;text-align:center}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:14px}
+.hero{font-size:32px;font-weight:300;line-height:1.2;letter-spacing:-.02em;margin-bottom:10px}
+.hero em{font-style:italic;color:var(--gnm)}
+.hero-sub{font-size:15px;color:var(--tx2);margin-bottom:36px;max-width:440px;margin-left:auto;margin-right:auto}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-bottom:28px;text-align:left}
+.tc{background:var(--wh);border:2px solid var(--bd);border-radius:var(--r);padding:16px 14px;cursor:pointer;transition:all .15s;position:relative;user-select:none}
+.tc:hover{border-color:var(--tx3);box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.tc.sel{border-color:var(--gnm);background:var(--gnl)}
+.tc.sel::after{content:'✓';position:absolute;top:9px;right:11px;width:20px;height:20px;background:var(--gnm);color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:20px;text-align:center}
+.tc-em{font-size:26px;margin-bottom:7px;display:block}
+.tc-name{font-size:13px;font-weight:600;color:var(--tx)}
+.tc-brand{font-size:11px;color:var(--tx3);margin-top:2px}
+.cta{background:var(--gnm);color:#fff;border:none;padding:13px 34px;border-radius:30px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(42,122,78,.28)}
+.cta:hover{background:var(--gn)}
+.cta:disabled{background:var(--tx3);box-shadow:none;cursor:not-allowed}
+/* guide */
+.guide{display:none}
+.guide.on{display:block}
+.gnav{background:var(--wh);border-bottom:1px solid var(--bd);padding:0 24px;display:flex;gap:2px;overflow-x:auto}
+.gt{padding:13px 14px;font-size:13px;font-weight:500;color:var(--tx2);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .13s;margin-bottom:-1px}
+.gt:hover{color:var(--tx)}
+.gt.on{color:var(--gnm);border-bottom-color:var(--gnm)}
+.page{display:none;padding:36px 28px;max-width:820px;margin:0 auto}
+.page.on{display:block}
+.page-em{font-size:44px;margin-bottom:10px;display:block}
+.page-title{font-size:26px;font-weight:300;letter-spacing:-.02em;margin-bottom:5px}
+.page-intro{font-size:14.5px;color:var(--tx2);max-width:540px;margin-bottom:24px}
+/* inverter picker */
+.inv-pick-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-bottom:14px;text-align:center}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:8px}
+.inv-card{background:var(--wh);border:2px solid var(--bd);border-radius:var(--r);padding:16px 14px;cursor:pointer;transition:all .15s}
+.inv-card:hover{border-color:var(--gnm);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.inv-card-name{font-size:13.5px;font-weight:600;color:var(--tx);margin-bottom:3px}
+.inv-card-brand{font-size:11px;color:var(--tx3);margin-bottom:6px}
+.inv-card-desc{font-size:12px;color:var(--tx2);line-height:1.45}
+.inv-hint{font-size:12px;color:var(--tx3);text-align:center;margin-top:8px;font-style:italic}
+.back-inv{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--tx2);cursor:pointer;margin-bottom:18px;padding:5px 10px;border:1px solid var(--bd);border-radius:20px;background:var(--wh)}
+.back-inv:hover{border-color:var(--tx3);color:var(--tx)}
+/* warnings */
+.warn{display:flex;gap:11px;align-items:flex-start;padding:13px 16px;border-radius:var(--r);margin-bottom:14px;font-size:13.5px;border:1px solid}
+.warn-red{background:var(--rdl);border-color:var(--rdb);color:var(--rd)}
+.warn-orange{background:var(--orl);border-color:var(--orb);color:var(--or)}
+.warn-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+/* blocks */
+.block{margin-bottom:24px;border-radius:var(--r);overflow:hidden;border:1px solid}
+.block-diy{border-color:var(--gnb)}
+.block-pro{border-color:var(--blb)}
+.block-head{display:flex;align-items:center;gap:12px;padding:13px 18px;color:#fff}
+.block-diy .block-head{background:var(--gnm)}
+.block-pro .block-head{background:var(--blm)}
+.bh-icon{font-size:19px}
+.bh-title{font-size:14px;font-weight:600}
+.bh-sub{font-size:11.5px;opacity:.78;margin-top:1px}
+.block-body{background:var(--wh)}
+/* diy tasks */
+.task{border-bottom:1px solid var(--bd2)}
+.task:last-child{border-bottom:none}
+.task-hd{display:flex;align-items:flex-start;gap:12px;padding:15px 18px;cursor:pointer}
+.task-hd:hover{background:var(--gr)}
+.freq{font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap;margin-top:2px;flex-shrink:0}
+.f-m{background:var(--bll);color:var(--bl)}
+.f-k{background:var(--orl);color:var(--or)}
+.f-j{background:var(--gnl);color:var(--gn)}
+.f-c{background:var(--rdl);color:var(--rd)}
+.task-title{font-size:14px;font-weight:500;line-height:1.4}
+.task-short{font-size:12.5px;color:var(--tx2);margin-top:3px}
+.chev{margin-left:auto;font-size:13px;color:var(--tx3);transition:transform .2s;flex-shrink:0;margin-top:3px}
+.task.open .chev{transform:rotate(180deg)}
+.task-det{display:none;padding:0 18px 18px;background:var(--gr);border-top:1px solid var(--bd2)}
+.task.open .task-det{display:block}
+.steps-lbl{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--gn);margin:14px 0 9px}
+.steps{list-style:none;padding:0}
+.steps li{display:flex;gap:9px;margin-bottom:7px;font-size:13.5px;color:var(--tx2);line-height:1.5;align-items:flex-start}
+.steps li::before{content:attr(data-n);flex-shrink:0;width:20px;height:20px;background:var(--gnm);color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.tip{background:var(--wh);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;margin-top:10px}
+.tip-lbl{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.tip-lbl.green{color:var(--gn)}.tip-lbl.orange{color:var(--or)}.tip-lbl.red{color:var(--rd)}.tip-lbl.blue{color:var(--bl)}
+.tip-body{font-size:13px;color:var(--tx2);line-height:1.6}
+.tip-body strong{color:var(--tx)}
+/* pro tasks */
+.pro-item{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;border-bottom:1px solid var(--bd2)}
+.pro-item:last-child{border-bottom:none}
+.pro-dot{width:8px;height:8px;border-radius:50%;background:var(--blm);flex-shrink:0;margin-top:6px}
+.pro-title{font-size:13.5px;font-weight:500;color:var(--tx);line-height:1.4}
+.pro-why{font-size:12px;color:var(--tx2);margin-top:3px;font-style:italic}
+.pro-wet{display:inline-block;margin-top:5px;font-size:10px;font-weight:600;background:var(--bll);color:var(--bl);border:1px solid var(--blb);border-radius:20px;padding:2px 8px}
+.pro-freq{flex-shrink:0;font-size:11px;color:var(--tx3);white-space:nowrap;padding-top:3px}
+.footer-cta{margin-top:24px;padding:18px 22px;background:var(--wh);border:1px solid var(--bd);border-radius:var(--r);text-align:center}
+.footer-cta p:first-child{font-size:17px;font-weight:300;margin-bottom:5px}
+.footer-cta p:last-child{font-size:13px;color:var(--tx2)}
+/* AI */
+.ai-fab{position:fixed;bottom:22px;right:22px;z-index:500}
+.ai-btn{width:52px;height:52px;border-radius:50%;background:var(--tx);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.22);display:flex;align-items:center;justify-content:center}
+.ai-panel{position:fixed;bottom:84px;right:22px;z-index:500;width:340px;background:var(--wh);border:1px solid var(--bd);border-radius:14px;box-shadow:0 6px 28px rgba(0,0,0,.1);display:none;flex-direction:column;max-height:460px;overflow:hidden}
+.ai-panel.on{display:flex}
+.ai-ph{padding:13px 16px;background:var(--tx);color:#fff;display:flex;align-items:center;justify-content:space-between}
+.ai-ph-t{font-size:14px;font-weight:600}
+.ai-ph-s{font-size:11px;color:#888;margin-top:1px}
+.ai-x{background:none;border:none;color:#888;font-size:17px;cursor:pointer}
+.ai-msgs{flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:10px}
+.ai-bub{max-width:90%;padding:9px 13px;border-radius:10px;font-size:13px;line-height:1.6}
+.ai-bub.bot{background:var(--gr);border:1px solid var(--bd);align-self:flex-start;border-radius:3px 10px 10px 10px}
+.ai-bub.usr{background:var(--tx);color:#fff;align-self:flex-end;border-radius:10px 3px 10px 10px}
+.ai-bub strong{color:var(--gnm)}
+.ai-bub ul{padding-left:13px;margin-top:3px}
+.ai-quick{padding:7px 13px;display:flex;flex-wrap:wrap;gap:5px;border-top:1px solid var(--bd2)}
+.ai-qb{font-size:11.5px;padding:5px 10px;border-radius:20px;background:var(--cr);border:1px solid var(--bd);color:var(--tx2);cursor:pointer;font-family:inherit}
+.ai-qb:hover{border-color:var(--tx3);color:var(--tx)}
+.ai-row{padding:10px 12px;border-top:1px solid var(--bd2);display:flex;gap:7px}
+.ai-inp{flex:1;border:1px solid var(--bd);border-radius:7px;padding:7px 11px;font-family:inherit;font-size:13px;color:var(--tx);background:var(--cr);outline:none}
+.ai-inp:focus{border-color:var(--gnm)}
+.ai-go{background:var(--gnm);border:none;border-radius:7px;width:34px;color:#fff;font-size:15px;cursor:pointer}
+.dots{display:flex;gap:3px;align-items:center}
+.dots span{width:6px;height:6px;background:var(--tx3);border-radius:50%;animation:d 1.2s ease-in-out infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes d{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+@media(max-width:580px){.tgrid{grid-template-columns:1fr 1fr}.hero{font-size:24px}.page{padding:24px 16px}.ai-panel{width:calc(100vw - 28px);right:14px}}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <span class="logo">Uw installateur</span>
+  <button class="back-btn" id="back-btn" onclick="goBack()">← Mijn installaties</button>
+</div>
+
+<div id="onb">
+  <div class="onb">
+    <p class="eyebrow">Uw persoonlijke onderhoudsgids</p>
+    <h1 class="hero">Wat heeft uw installateur bij u <em>geïnstalleerd?</em></h1>
+    <p class="hero-sub">Selecteer uw installaties en ontvang een onderhoudsgids op maat.</p>
+    <div class="tgrid" id="tgrid"></div>
+    <button class="cta" id="start-btn" disabled onclick="start()">Toon mijn onderhoudsgids →</button>
+  </div>
+</div>
+
+<div class="guide" id="guide">
+  <nav class="gnav" id="gnav"></nav>
+  <div id="pages"></div>
+</div>
+
+<div class="ai-fab">
+  <div class="ai-panel" id="ai-panel">
+    <div class="ai-ph">
+      <div><div class="ai-ph-t">✦ AI-assistent</div><div class="ai-ph-s">Stel uw vraag in gewone taal</div></div>
+      <button class="ai-x" onclick="toggleAI()">✕</button>
+    </div>
+    <div class="ai-msgs" id="ai-msgs"><div class="ai-bub bot">Hallo! Heeft u een vraag over het onderhoud van uw installatie?</div></div>
+    <div class="ai-quick" id="ai-quick">
+      <button class="ai-qb" onclick="qsend(this)">Hoe reinig ik mijn filter?</button>
+      <button class="ai-qb" onclick="qsend(this)">Wat is normale waterdruk?</button>
+      <button class="ai-qb" onclick="qsend(this)">Ik zie een foutcode</button>
+    </div>
+    <div class="ai-row">
+      <input class="ai-inp" id="ai-inp" placeholder="Typ uw vraag..." onkeydown="if(event.key==='Enter')sendAI()">
+      <button class="ai-go" onclick="sendAI()">→</button>
+    </div>
+  </div>
+  <button class="ai-btn" onclick="toggleAI()">✦</button>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+
+var TECHS = [
+  {id:'zon', name:'Zonnepanelen', em:'☀️', brand:'SolarEdge · Enphase · SMA · Huawei · GoodWe · Sofar', inverterPick:true},
+  {id:'bat', name:'Thuisbatterij', em:'🔋', brand:'Pylontech · AlphaESS · Duracell · iLuBat'},
+  {id:'lp',  name:'Laadpaal', em:'⚡', brand:'Wallbox · Alfen · iLuCharge'},
+  {id:'wpac',name:'Warmtepomp (AIRCO)', em:'❄️', brand:'Mitsubishi Electric'},
+  {id:'wplw',name:'Warmtepomp (verwarming)', em:'🏠', brand:'Mitsubishi Ecodan'},
+  {id:'wpb', name:'Warmtepompboiler', em:'🚿', brand:'Ariston Nuos'},
+  {id:'vent',name:'Ventilatiesysteem', em:'🌬️', brand:'Mechanische ventilatie · WTW'},
+  {id:'zb',  name:'Zonneboiler', em:'🔆', brand:'Thermische zonnecollectoren'}
+];
+
+var INVERTERS = [
+  {id:'zon_string',  name:'String omvormer',         brand:'SMA · GoodWe · Sofar · Huawei · Fronius', desc:'Één centrale omvormer voor alle panelen — meest voorkomend. Kastje in de meterkast.'},
+  {id:'zon_se',      name:'SolarEdge + optimizers',  brand:'SolarEdge', desc:'Optimizer per paneel + centrale omvormer. U herkent dit aan de kleine kastjes achter elk paneel.'},
+  {id:'zon_enphase', name:'Enphase micro-omvormers', brand:'Enphase IQ', desc:'Kleine omvormer achter elk paneel. Geen grote centrale omvormer in de meterkast.'},
+  {id:'zon_hybride', name:'Hybride omvormer',        brand:'GoodWe · Sofar · Huawei · Fronius Symo', desc:'Omvormer gecombineerd met batterij-aansturing in één toestel.'}
+];
+
+var PAGES = {
+  zon_string: {
+    name:'Zonnepanelen — String omvormer', em:'☀️',
+    intro:'Uw panelen zijn aangesloten op een centrale string omvormer. Deze combineert de stroom van alle panelen samen.',
+    warns:[
+      {t:'orange', ic:'⚠️', tx:'Gebruik nooit een hogedrukreiniger op uw panelen. Dit beschadigt de coating en doet uw garantie vervallen.'},
+      {t:'orange', ic:'⚠️', tx:'De koelingsopeningen van de omvormer moeten altijd vrij zijn van stof en obstakels.'}
+    ],
+    diy:{title:'Dit kunt u zelf doen', sub:'Veilig en zonder technische kennis', tasks:[
+      {title:'Panelen visueel controleren', freq:'1–2x per jaar', fc:'f-j', short:'Kijk vanop de grond of met een verrekijker.',
+       steps:['Kijk of er panelen gebarsten of beschadigd zijn.','Controleer op nieuwe schaduw door gegroeide bomen of constructies.','Let op vogelschade of nesmateriaal rondom de montageprofielen.','Foto nemen bij twijfel en doorsturen naar uw installateur.'],
+       tips:[{l:'Tip: één defect paneel raakt de hele reeks', cl:'orange', tx:'Bij een string omvormer presteren alle panelen in dezelfde reeks minder als één paneel slecht presteert. U merkt dit snel via uw monitoring-app.'},
+             {l:'Ga nooit zelf op het dak', cl:'red', tx:'Stuur een foto naar uw installateur. Die beoordeelt op afstand of een bezoek nodig is.'}]},
+      {title:'Panelen reinigen', freq:'1–2x per jaar', fc:'f-j', short:'Stof, vogelpoep en mos verminderen uw opbrengst met 10–20%.',
+       steps:['Wacht op bewolkt en koel weer — nooit bij felle zon.','Gebruik een zachte borstel of mop met lange steel.','Spoel af met leidingwater of licht zeepwater (pH-neutraal).','Goed naspoelen zodat er geen zeepfilm achterblijft.'],
+       tips:[{l:'Absoluut verboden', cl:'red', tx:'<strong>Hogedrukreiniger:</strong> beschadigt coating en garantie. <strong>Schuurmiddelen:</strong> krassen verminderen de lichtdoorval permanent.'}]},
+      {title:'Monitoring-app en omvormer wekelijks checken', freq:'Wekelijks', fc:'f-m', short:'Groen LED of groen icoontje in de app = alles goed.',
+       steps:['Open uw app (Sunny Portal / SEMS / SolarmanPV / FusionSolar / Solar.web).','Vergelijk de productie van vandaag met vergelijkbare dagen.','Kijk naar de LED op de omvormer zelf: groen = normaal.','Rode foutcode of alarm → noteer de code en contacteer uw installateur.'],
+       tips:[{l:'Omvormer staat s\'avonds uit — normaal', cl:'green', tx:'String omvormers schakelen automatisch uit bij onvoldoende zonlicht. Geen defect.'},
+             {l:'Icoontjes begrijpen', cl:'blue', tx:'Groen = OK · Oranje = aandachtspunt · Rood = systeem gestopt → uw installateur bellen.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Technische handelingen die vakkennis vereisen', tasks:[
+      {title:'DC-bekabeling en aansluitingen inspecteren', freq:'1x per jaar', why:'Losse verbindingen zijn niet zichtbaar maar vormen een brandrisico.', wet:''},
+      {title:'Koelingsopeningen omvormer reinigen en firmware updaten', freq:'1x per jaar', why:'Oververhitting of verouderde firmware kan de omvormer beschadigen.', wet:''},
+      {title:'Controle aarding en overspanningsbeveiliging', freq:'Elke 3 jaar', why:'Wettelijke AREI-verplichting. Erkend elektricien vereist.', wet:'JA – AREI vereist'}
+    ]}
+  },
+  zon_se: {
+    name:'Zonnepanelen — SolarEdge + optimizers', em:'☀️',
+    intro:'Elk paneel heeft een eigen SolarEdge optimizer. Hierdoor presteert elk paneel onafhankelijk — één slecht paneel remt de rest niet af.',
+    warns:[
+      {t:'orange', ic:'⚠️', tx:'Gebruik nooit een hogedrukreiniger op uw panelen. Dit beschadigt de coating en doet uw garantie vervallen.'}
+    ],
+    diy:{title:'Dit kunt u zelf doen', sub:'Veilig en zonder technische kennis', tasks:[
+      {title:'Panelen visueel controleren', freq:'1–2x per jaar', fc:'f-j', short:'Kijk vanop de grond of met een verrekijker.',
+       steps:['Kijk of er panelen gebarsten of beschadigd zijn.','Controleer op nieuwe schaduw door gegroeide bomen of constructies.','Let op vogelschade of nesmateriaal rondom de montageprofielen.','Foto nemen bij twijfel en doorsturen naar uw installateur.'],
+       tips:[{l:'Voordeel van uw systeem', cl:'green', tx:'Dankzij de optimizer per paneel ziet u in MySolarEdge exact welk paneel minder presteert. U hoeft dit zelf niet op te sporen.'}]},
+      {title:'Panelen reinigen', freq:'1–2x per jaar', fc:'f-j', short:'Stof, vogelpoep en mos verminderen uw opbrengst.',
+       steps:['Wacht op bewolkt en koel weer — nooit bij felle zon.','Gebruik een zachte borstel of mop met lange steel.','Spoel af met leidingwater of licht zeepwater.','Goed naspoelen.'],
+       tips:[{l:'Absoluut verboden', cl:'red', tx:'<strong>Hogedrukreiniger:</strong> beschadigt coating en garantie.'}]},
+      {title:'MySolarEdge app wekelijks checken', freq:'Wekelijks', fc:'f-m', short:'Via de app ziet u per paneel hoe goed het presteert.',
+       steps:['Open de MySolarEdge app of monitoring.solaredge.com.','Bekijk de dagproductie op de overzichtspagina.','Tik op een paneel om de individuele optimizer-output te zien.','Alarm of rood paneel → contacteer uw installateur.'],
+       tips:[{l:'SafeDC veiligheid', cl:'blue', tx:'Als de omvormer uitvalt, verlagen de optimizers automatisch de spanning tot een veilig niveau.'},
+             {l:'Per-paneel inzicht', cl:'green', tx:'Uw systeem toont de output van elk paneel apart. Zo ziet u meteen of één paneel beschaduwd of defect is.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Optimizer-controle vereist professionele portaaltoegang', tasks:[
+      {title:'Optimizer-status per paneel controleren via MySolarEdge', freq:'1x per jaar', why:'Afwijkende optimizers zijn alleen zichtbaar via de professionele portaalweergave.', wet:''},
+      {title:'Firmware-update omvormer en optimizers', freq:'1x per jaar', why:'Optimizer-firmware updates verbeteren het vermogen. Vereist gecontroleerde uitvoering.', wet:''},
+      {title:'DC-bekabeling en aansluitingen inspecteren', freq:'1x per jaar', why:'Losse verbindingen zijn een brandrisico.', wet:''},
+      {title:'Controle aarding en overspanningsbeveiliging', freq:'Elke 3 jaar', why:'Wettelijke AREI-verplichting. Erkend elektricien vereist.', wet:'JA – AREI vereist'}
+    ]}
+  },
+  zon_enphase: {
+    name:'Zonnepanelen — Enphase micro-omvormers', em:'☀️',
+    intro:'Elk paneel heeft een eigen micro-omvormer. Dit is het meest onafhankelijke systeem: één defect paneel raakt de rest absoluut niet.',
+    warns:[
+      {t:'orange', ic:'⚠️', tx:'Gebruik nooit een hogedrukreiniger op uw panelen. Dit beschadigt de coating en doet uw garantie vervallen.'}
+    ],
+    diy:{title:'Dit kunt u zelf doen', sub:'Veilig en zonder technische kennis', tasks:[
+      {title:'Panelen visueel controleren', freq:'1–2x per jaar', fc:'f-j', short:'Kijk vanop de grond of met een verrekijker.',
+       steps:['Kijk of er panelen gebarsten of beschadigd zijn.','Controleer op nieuwe schaduw door gegroeide bomen of constructies.','Foto nemen bij twijfel en doorsturen naar uw installateur.'],
+       tips:[{l:'Voordeel van uw systeem', cl:'green', tx:'Elk paneel werkt volledig onafhankelijk. Schaduw of een defect op één paneel heeft nul effect op de andere panelen.'}]},
+      {title:'Panelen reinigen', freq:'1–2x per jaar', fc:'f-j', short:'Stof, vogelpoep en mos verminderen uw opbrengst.',
+       steps:['Wacht op bewolkt en koel weer — nooit bij felle zon.','Gebruik een zachte borstel of mop met lange steel.','Spoel af met leidingwater of licht zeepwater.','Goed naspoelen.'],
+       tips:[{l:'Absoluut verboden', cl:'red', tx:'<strong>Hogedrukreiniger:</strong> beschadigt coating en garantie.'}]},
+      {title:'Enlighten app wekelijks checken', freq:'Wekelijks', fc:'f-m', short:'De app toont per micro-omvormer of alles normaal loopt.',
+       steps:['Open de Enphase Enlighten app of enlighten.enphaseenergy.com.','Bekijk de dagproductie op het dashboard.','Alle micro-omvormers groen?','Grijs of rood icoontje → contacteer uw installateur.'],
+       tips:[{l:'Auto-firmware updates', cl:'green', tx:'Enphase micro-omvormers updaten hun firmware automatisch. Controleer in de app of automatische updates ingeschakeld staan.'},
+             {l:'25 jaar garantie', cl:'blue', tx:'Enphase biedt 25 jaar productgarantie op micro-omvormers. Voorwaarde: monitoring actief houden.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Systeemcontrole vereist professionele toegang', tasks:[
+      {title:'Per-module statusrapport via Enlighten portaal', freq:'1x per jaar', why:'Professionele toegang toont afwijkende modules die in de klantapp niet zichtbaar zijn.', wet:''},
+      {title:'Auto-firmware update status verifiëren', freq:'1x per jaar', why:'Niet-geüpdatete micro-omvormers kunnen uitsluitingen krijgen bij gekende bugs.', wet:''},
+      {title:'DC-bekabeling en aansluitingen inspecteren', freq:'1x per jaar', why:'Losse verbindingen zijn een brandrisico.', wet:''},
+      {title:'Controle aarding en overspanningsbeveiliging', freq:'Elke 3 jaar', why:'Wettelijke AREI-verplichting.', wet:'JA – AREI vereist'}
+    ]}
+  },
+  zon_hybride: {
+    name:'Zonnepanelen — Hybride omvormer', em:'☀️',
+    intro:'Uw hybride omvormer combineert de zonnepanelen-omvormer met de aansturing van uw thuisbatterij in één toestel.',
+    warns:[
+      {t:'orange', ic:'⚠️', tx:'Gebruik nooit een hogedrukreiniger op uw panelen. Dit beschadigt de coating en doet uw garantie vervallen.'},
+      {t:'red', ic:'⛔', tx:'Pas nooit zelf de laadstrategie of batterijparameters aan. Dit kan de batterijgarantie doen vervallen.'}
+    ],
+    diy:{title:'Dit kunt u zelf doen', sub:'Veilig en zonder technische kennis', tasks:[
+      {title:'Panelen visueel controleren', freq:'1–2x per jaar', fc:'f-j', short:'Kijk vanop de grond of met een verrekijker.',
+       steps:['Kijk of er panelen gebarsten of beschadigd zijn.','Controleer op nieuwe schaduw.','Foto nemen bij twijfel en doorsturen naar uw installateur.'],
+       tips:[{l:'Ga nooit zelf op het dak', cl:'red', tx:'Stuur een foto naar uw installateur. Die beoordeelt op afstand of een bezoek nodig is.'}]},
+      {title:'Panelen reinigen', freq:'1–2x per jaar', fc:'f-j', short:'Stof, vogelpoep en mos verminderen uw opbrengst.',
+       steps:['Wacht op bewolkt en koel weer — nooit bij felle zon.','Gebruik een zachte borstel of mop met lange steel.','Spoel af met leidingwater of licht zeepwater.','Goed naspoelen.'],
+       tips:[{l:'Absoluut verboden', cl:'red', tx:'<strong>Hogedrukreiniger:</strong> beschadigt coating en garantie.'}]},
+      {title:'Monitoring-app dagelijks checken', freq:'Dagelijks/wekelijks', fc:'f-m', short:'Uw app toont zowel zonnepanelen- als batterijprestaties.',
+       steps:['Open uw app (GoodWe SEMS / Sofar SolarmanPV / Huawei FusionSolar / Fronius Solar.web).','Bekijk de energiestroom: panelen naar batterij naar net.','Controleer het laad- en ontlaadpatroon: normaal?','Alarm of foutcode → noteer en contacteer uw installateur.'],
+       tips:[{l:'Selfuse-modus begrijpen', cl:'green', tx:'Uw systeem laadt eerst de batterij met zonne-energie en stuurt pas daarna overschot naar het net. Dit is normaal.'},
+             {l:'Koelingsopeningen vrijhouden', cl:'orange', tx:'De hybride omvormer werkt harder dan een gewone omvormer. Houd de ventilatieopeningen stofvrij.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Hybride systeem vereist gecombineerde omvormer- en batterijcontrole', tasks:[
+      {title:'Laadparameters en batterijintegratie valideren', freq:'1x per jaar', why:'Onjuiste laadconfiguratie versnelt batterijdegradatie en kan de garantie doen vervallen.', wet:''},
+      {title:'Firmware-update hybride omvormer', freq:'1x per jaar', why:'Hybride firmware beheert zowel PV als batterij — updates zijn complexer.', wet:''},
+      {title:'DC-bekabeling en aansluitingen inspecteren', freq:'1x per jaar', why:'Losse verbindingen zijn een brandrisico.', wet:''},
+      {title:'Controle aarding en overspanningsbeveiliging', freq:'Elke 3 jaar', why:'Wettelijke AREI-verplichting.', wet:'JA – AREI vereist'}
+    ]}
+  },
+  bat: {
+    name:'Thuisbatterij', em:'🔋',
+    intro:'Uw thuisbatterij beheert zichzelf grotendeels. Een paar aandachtspunten zijn essentieel om uw 10-jaar garantie te behouden.',
+    warns:[
+      {t:'red', ic:'⛔', tx:'Pas nooit zelf de BMS-instellingen aan. Dit leidt tot onmiddellijk verlies van uw volledige garantie.'},
+      {t:'orange', ic:'⚠️', tx:'Bij zwelling, verkleuring of brandlucht: gebruik staken en uw installateur onmiddellijk contacteren.'}
+    ],
+    diy:{title:'Dit kunt u zelf doen', sub:'Eenvoudige maandelijkse aandachtspunten', tasks:[
+      {title:'Ventilatie en omgeving controleren', freq:'Maandelijks', fc:'f-m', short:'Temperatuur en luchtcirculatie bepalen de levensduur van uw batterij.',
+       steps:['Controleer of min. 20 cm vrije ruimte rondom de batterij aanwezig is.','Zorg dat de omgevingstemperatuur tussen 15 en 25 graden blijft.','Controleer of ventilatieopeningen niet geblokkeerd zijn.','Stofzuig de roosters licht 2x per jaar.'],
+       tips:[{l:'Temperatuur is cruciaal', cl:'blue', tx:'Elke 10 graden boven de optimale temperatuur versnelt de slijtage van de batterijcellen aanzienlijk.'},
+             {l:'Zomer: extra aandacht', cl:'orange', tx:'Een meterkast of kelder kan in de zomer gemakkelijk 40 graden bereiken. Controleer dan wekelijks.'}]},
+      {title:'App-monitoring wekelijks bekijken', freq:'Wekelijks', fc:'f-m', short:'Uw batterij communiceert veel via de app.',
+       steps:['Open uw app (AlphaESS / iLusmart / Duracell app / Pylontech portal).','Controleer de laad- en ontlaadcyclus: normaal qua patroon?','Bekijk de State of Health indien zichtbaar.','Foutmeldingen of alarmen: onmiddellijk aan uw installateur melden.'],
+       tips:[{l:'Normale SoH-evolutie', cl:'green', tx:'Jaar 1: 98-100% - Jaar 5: 88-92% - Jaar 10: minimum 70-80% (garantiedrempel). Snellere daling = uw installateur contacteren.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Technische interventies die uw 10-jaar garantie beschermen', tasks:[
+      {title:'State of Health meting en jaarlijks capaciteitsrapport', freq:'1x per jaar', why:'Officieel rapport dient als garantiebewijs bij de fabrikant.', wet:''},
+      {title:'BMS firmware-update', freq:'1x per jaar', why:'Beveiligingsupdates en verbeterde laadalgoritmen. Onjuist uitgevoerd kan het systeem beschadigen.', wet:''},
+      {title:'Volledige kabelinspectie en zekeringencontrole', freq:'1x per jaar', why:'Losse DC-verbindingen zijn een brandrisico en niet zichtbaar zonder demontage.', wet:''},
+      {title:'Module-balancering of cloudrapport per merk', freq:'1x per jaar', why:'Onbalans tussen batterijmodules leidt tot versnelde degradatie.', wet:''}
+    ]}
+  },
+  lp: {
+    name:'Laadpaal', em:'⚡',
+    intro:'Uw laadpaal is ontworpen voor jarenlang probleemvrij gebruik. Enkele maandelijkse checks houden hem in perfecte staat.',
+    warns:[{t:'red', ic:'⛔', tx:'Voer nooit zelf reparaties uit aan uw laadpaal. Dit vernietigt de garantie en maakt een nieuwe AREI-keuring verplicht.'}],
+    diy:{title:'Dit kunt u zelf doen', sub:'Maandelijks 5 minuten', tasks:[
+      {title:'Laadkabel en connector inspecteren en reinigen', freq:'Maandelijks', fc:'f-m', short:'Een schone connector laadt sneller en gaat langer mee.',
+       steps:['Bekijk de laadkabel: zijn er knikken of beschadiging in de mantel?','Veeg de connector af met een droge, zachte doek. Geen water of sprays.','Controleer of de vergrendelingspin soepel werkt.','Bij beschadiging: paal niet meer gebruiken en uw installateur bellen.'],
+       tips:[{l:'Beschadigde kabel = onmiddellijk stoppen', cl:'red', tx:'Een beschadigde kabel is een ernstig veiligheidsrisico.'},
+             {l:'Goede kabelopberging', cl:'green', tx:'Hang de kabel altijd op de voorziene haak. Nooit strak opgerold laten liggen.'}]},
+      {title:'App en statistieken bekijken', freq:'Maandelijks', fc:'f-m', short:'Uw app geeft inzicht in verbruik en mogelijke problemen.',
+       steps:['Open uw app (Wallbox myBox / Alfen Eve Connect / iLusmart).','Controleer of de laatste laadsessies normaal verlopen zijn.','Bij herhaalde foutcodes: noteer de code en contacteer uw installateur.'],
+       tips:[{l:'Lader werkt niet? Eerst dit checken', cl:'blue', tx:'1. Is de zekering niet gesprongen? 2. Is de aardlekschakelaar nog aan? 3. Herstart de paal via de app.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Wettelijk verplicht of technisch te complex', tasks:[
+      {title:'Jaarlijkse firmware-update via fabrieksportaal', freq:'1x per jaar', why:'Beveiligingsupdates en verbeteringen.', wet:''},
+      {title:'Elektrische keuring: aansluitingen en aarding', freq:'Elke 2 jaar', why:'Wettelijk verplicht conform AREI.', wet:'JA – AREI vereist'},
+      {title:'Volledige AREI-herkeuring installatie', freq:'Elke 5 jaar', why:'Wettelijke verplichting. Zonder geldig attest bent u aansprakelijk.', wet:'JA – AREI wettelijk'}
+    ]}
+  },
+  wpac: {
+    name:'Warmtepomp (AIRCO)', em:'❄️',
+    intro:'Uw Mitsubishi warmtepomp verwarmt en koelt efficiënt. Regelmatige filterreiniging is de belangrijkste actie die u zelf doet.',
+    warns:[
+      {t:'red', ic:'⛔', tx:'Mitsubishi vereist een jaarlijks servicebezoek door erkend Diamond Dealer voor garantiebehoud. Zonder dit vervalt de volledige systeemgarantie.'},
+      {t:'orange', ic:'⚠️', tx:'De koelmiddelkring mag uitsluitend door gecertificeerde technici worden aangeraakt. Wettelijke verplichting.'}
+    ],
+    diy:{title:'Dit kunt u zelf doen', sub:'Filterreiniging is uw belangrijkste bijdrage', tasks:[
+      {title:'Filter van de binnenunit reinigen', freq:'Om de 2 weken', fc:'f-c', short:'Vuile filters = hogere energiefactuur en motorschade.',
+       steps:['Zet het toestel UIT via de afstandsbediening.','Open het frontpaneel (klap naar boven of glijdt open — zie uw handleiding).','Schuif het stoffilter voorzichtig naar buiten.','Klop het filter af of spoel het onder lauw water.','Laat het filter volledig drogen — minimum 30 minuten.','Schuif het filter terug en zet het toestel terug aan.'],
+       tips:[{l:'Waarom zo vaak?', cl:'green', tx:'Een verstopt filter laat de motor tot 40% harder werken. Elke 2 weken is de Mitsubishi-aanbeveling voor garantiebehoud.'},
+             {l:'Nat filter terugplaatsen is verboden', cl:'red', tx:'Een vochtig filter trekt schimmel aan. Altijd volledig droog laten.'}]},
+      {title:'Buitenunit vrij houden', freq:'Maandelijks', fc:'f-m', short:'De buitenunit heeft vrije luchtcirculatie nodig.',
+       steps:['Controleer of geen bladeren of obstakels de luchtinlaat blokkeren.','Houd min. 50 cm vrije ruimte rondom de buitenunit.','Na storm of sneeuwval: puin verwijderen.','Nooit afdekken in de winter.'],
+       tips:[{l:'IJsvorming is normaal', cl:'green', tx:'Bij vriesweer ontijst de buitenunit zichzelf automatisch. U ziet stoom of water — geen defect.'},
+             {l:'IJsvorming die aanhoudt?', cl:'orange', tx:'Langer dan 2 uur ijs of geen warme lucht meer: zet systeem op verwarming en contacteer uw installateur.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Jaarlijkse verplichte service + F-gassenlogboek', tasks:[
+      {title:'Warmtewisselaar professioneel reinigen (binnen- en buitenunit)', freq:'1x per jaar', why:'Diamond Dealer certificering vereist voor Mitsubishi garantiebehoud.', wet:'JA – Mitsubishi garantie'},
+      {title:'Koelmiddeldruk meten + lektest + F-gassenlogboek', freq:'1x per jaar', why:'Wettelijke verplichting EU F-gassenverordening 2024/573.', wet:'JA – EU F-gas wet'},
+      {title:'Condensaatafvoer reinigen en aansluitingen inspecteren', freq:'1x per jaar', why:'Geblokkeerde afvoer veroorzaakt waterschade.', wet:''},
+      {title:'Fotokatalytisch of plasmafilter vervangen (indien aanwezig)', freq:'Elke 2-3 jaar', why:'Verouderde filters zijn minder effectief.', wet:''}
+    ]}
+  },
+  wplw: {
+    name:'Warmtepomp (verwarming)', em:'🏠',
+    intro:'Uw Mitsubishi Ecodan verwarmt uw woning efficiënt. Het systeem is grotendeels zelfregulerend, maar de waterdruk controleert u elke maand zelf.',
+    warns:[{t:'red', ic:'⛔', tx:'Laat de waterdruk NOOIT onder 1 bar zakken. Droogloop van de circulatiepomp is onomkeerbaar en valt volledig buiten garantie.'}],
+    diy:{title:'Dit kunt u zelf doen', sub:'Twee maandelijkse controles beschermen uw investering', tasks:[
+      {title:'Waterdruk aflezen op de manometer', freq:'Maandelijks', fc:'f-m', short:'De meest kritieke check — 10 seconden per maand.',
+       steps:['Zoek de manometer op uw binnenkast (kleine ronde meter met wijzer).','Lees de druk af s ochtends voor opstart.','Normale waarde: 1,5 tot 2 bar.','Druk tussen 1 en 1,5 bar: systeem bijvullen via de vulkraan.','Druk onder 1 bar of telkens terugkerend laag: uw installateur contacteren.'],
+       tips:[{l:'Hoe vul ik het systeem bij?', cl:'green', tx:'Zoek de vulkraan op de binnenunit (blauwe of grijze hendel). Langzaam opendraaien tot 1,8 bar. Kraan dichten. Systeem herstarten.'},
+             {l:'Meerdere keren per maand bijvullen?', cl:'orange', tx:'Dan is er een lek. Gebruik de installatie niet meer en bel uw installateur.'}]},
+      {title:'Melcloud app: systeem volgen', freq:'Maandelijks', fc:'f-m', short:'Uw warmtepomp communiceert veel via de Melcloud-app.',
+       steps:['Open de Mitsubishi Melcloud-app.','Bekijk de COP-waarde: normaal 2,5 tot 4,5 afhankelijk van het seizoen.','Controleer op foutcodes of alarmmeldingen.'],
+       tips:[{l:'Wat is een goede COP?', cl:'green', tx:'COP 3,5 betekent 3,5 kWh warmte voor 1 kWh elektriciteit. Lager dan 2,5 in zomer of 2,0 in winter: uw installateur contacteren.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Jaarlijkse verplichte Diamond Dealer service', tasks:[
+      {title:'Koelmiddeldruk + lektest + F-gassenlogboek', freq:'1x per jaar', why:'Wettelijke F-gasverplichting. Enkel gecertificeerde technici.', wet:'JA – F-gas wet'},
+      {title:'Diamond Dealer servicebezoek documenteren', freq:'1x per jaar', why:'Harde voorwaarde van Mitsubishi voor volledige systeemgarantie.', wet:'JA – Mitsubishi garantie'},
+      {title:'Expansievat, drukventiel en circulatiepomp inspecteren', freq:'1x per jaar', why:'Defecte expansievaten zijn niet zichtbaar maar kunnen tot systeemschade leiden.', wet:''},
+      {title:'Legionella-preventie verificeren (buffervat op 60 graden)', freq:'1x per jaar', why:'Wettelijke zorgplicht.', wet:'JA – Gezondheid/VLAREM'},
+      {title:'Glycol antivries controleren', freq:'Elke 2 jaar', why:'Te laag glycolgehalte leidt tot leidingbreuk bij vorst.', wet:''}
+    ]}
+  },
+  wpb: {
+    name:'Warmtepompboiler', em:'🚿',
+    intro:'Uw Ariston Nuos-boiler levert efficiënt warm water. Twee eenvoudige acties houden de tank- en apparaatgarantie intact.',
+    warns:[{t:'red', ic:'⛔', tx:'Ariston vereist aantoonbaar jaarlijkse anode-inspectie als voorwaarde voor de email-garantie op uw tank.'}],
+    diy:{title:'Dit kunt u zelf doen', sub:'Twee eenvoudige acties beschermen uw garantie', tasks:[
+      {title:'Luchtfilter reinigen', freq:'Elke 3 maanden', fc:'f-k', short:'Vuil filter slijt de motor.',
+       steps:['Zet de boiler UIT.','Open het filterluik (zijkant of bovenkant — zie handleiding).','Schuif het filter eruit en spoel het onder water.','Laat volledig drogen voor terugplaatsing.','Zet de boiler terug aan.'],
+       tips:[{l:'Luider ventilator = teken van vuil filter', cl:'orange', tx:'Als uw boiler lawaaiiger wordt, is een verstopt filter vaak de oorzaak.'}]},
+      {title:'Watertemperatuur instelling controleren', freq:'1x per jaar', fc:'f-j', short:'De juiste instelling beschermt uw gezin.',
+       steps:['Controleer de display of het bedieningspaneel.','Werkingstemperatuur: 55 tot 60 graden.','Controleer of het anti-legionellaprogramma ingeschakeld is (1x per week naar 65 graden).','Twijfelt u? Contacteer uw installateur.'],
+       tips:[{l:'Waarom 55-60 graden en niet lager?', cl:'blue', tx:'Onder 50 graden kan de legionellabacterie zich vermenigvuldigen. Ernstig gezondheidsrisico.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Jaarlijkse technische controle voor tank-emailgarantie', tasks:[
+      {title:'Magnesiumanode inspecteren en indien nodig vervangen', freq:'1x per jaar', why:'Ariston eist jaarlijks anode-bewijs voor tankgarantie. Vereist demontage.', wet:'JA – Ariston garantieconditie'},
+      {title:'Veiligheidsventiel testen', freq:'1x per jaar', why:'Een defect ventiel kan bij overdruk gevaarlijk zijn.', wet:''},
+      {title:'Condensaatafvoer reinigen', freq:'1x per jaar', why:'Geblokkeerde afvoer leidt tot waterschade.', wet:''}
+    ]}
+  },
+  vent: {
+    name:'Ventilatiesysteem', em:'🌬️',
+    intro:'Uw ventilatiesysteem is essentieel voor een gezond binnenklimaat. Het belangrijkste onderhoud doet u zelf: filters vervangen.',
+    warns:[{t:'red', ic:'⛔', tx:'Verkeerde of te late filtervervanging beschadigt de ventilatiemotor en maakt uw EPB-attest ongeldig — verplicht bij verkoop van uw woning.'}],
+    diy:{title:'Dit kunt u zelf doen', sub:'Filters vervangen is het meest impactvolle onderhoud', tasks:[
+      {title:'Filters vervangen', freq:'Elke 6-12 maanden', fc:'f-j', short:'Vuile filters = slechte luchtkwaliteit en motorschade.',
+       steps:['Schakel het systeem uit.','Zoek de filterkassen (technische ruimte of plafondunit).','Verwijder de oude filters.','Plaats nieuwe filters met de pijl in de stroomrichting.','Zet het systeem terug aan en noteer de datum.'],
+       tips:[{l:'Welke filters bestellen?', cl:'green', tx:'Noteer het modelnummer van uw ventilatieunit. Uw installateur levert de correcte filters.'},
+             {l:'Muf geurje in huis?', cl:'blue', tx:'Bijna altijd een teken van te late filtervervanging. Na nieuwe filters verdwijnt dit binnen 24 uur.'},
+             {l:'Huisdieren of veel stof?', cl:'orange', tx:'Dan elke 3 maanden vervangen.'}]},
+      {title:'Roosters reinigen', freq:'2x per jaar', fc:'f-j', short:'Verstopte roosters verminderen de luchttoevoer drastisch.',
+       steps:['Verwijder de ventilatieroostertjes.','Stofzuig het rooster licht.','Spoel af onder water en laat drogen.','Klik het rooster terug.'],
+       tips:[{l:'Buitenrooster ook checken', cl:'green', tx:'Het buitenrooster kan verstopt raken door insecten of bladeren.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Professionele balancering en wettelijk EPB-attest', tasks:[
+      {title:'Luchtkanalen inspecteren op lekkage en condensatie', freq:'1x per jaar', why:'Lekke kanalen halveren het WTW-rendement.', wet:''},
+      {title:'Warmtewisselaar diep reinigen', freq:'Elke 2 jaar', why:'Vervuilde kern verlaagt het rendement van 90% naar 60%.', wet:''},
+      {title:'Luchtdebieten meten en balanceren per ruimte', freq:'Elke 2-3 jaar', why:'Noodzakelijk voor EPB-attest.', wet:'JA – EPB-attest vereist'},
+      {title:'EPB-conformiteitsattest ventilatie opmaken', freq:'Elke 5 jaar', why:'Wettelijk verplicht in Vlaanderen. Verplicht bij verkoop of verhuur.', wet:'JA – EPB wettelijk'}
+    ]}
+  },
+  zb: {
+    name:'Zonneboiler', em:'🔆',
+    intro:'Uw zonneboiler gebruikt de zon om sanitair water te verwarmen. De systeemdruk controleert u zelf twee keer per jaar.',
+    warns:[{t:'orange', ic:'⚠️', tx:'Verouderd glycol wordt corrosief en beschadigt leidingen onomkeerbaar — niet gedekt door garantie. Uw installateur controleert dit jaarlijks.'}],
+    diy:{title:'Dit kunt u zelf doen', sub:'Tweemaal per jaar de druk aflezen', tasks:[
+      {title:'Systeemdruk aflezen op de manometer', freq:'2x per jaar', fc:'f-j', short:'De druk vertelt u of uw systeem goed dicht is.',
+       steps:['Zoek de manometer op uw boilerkast.','Lees de druk af s ochtends bij een koud systeem.','Normale druk: 1,5 tot 2,5 bar.','Druk lager dan 1,5 bar of hoger dan 3 bar: uw installateur contacteren.'],
+       tips:[{l:'Druk schommelt met temperatuur — normaal', cl:'blue', tx:'Op een zonnige dag kan de druk oplopen tot 3 bar. Het expansievat vangt dit op. Controleer altijd s ochtends.'},
+             {l:'Te lage druk?', cl:'orange', tx:'Luchtinsluiting beschadigt de circulatiepomp. Een lek laat kostbare collectievloeistof ontsnappen.'}]}
+    ]},
+    pro:{title:'Dit doet uw installateur voor u', sub:'Jaarlijkse technische inspectie', tasks:[
+      {title:'Veiligheidsventiel testen', freq:'1x per jaar', why:'Een defect ventiel kan bij overkoken gevaarlijk zijn.', wet:''},
+      {title:'Collector en bevestigingen inspecteren', freq:'1x per jaar', why:'Gebarsten glas op het dak vereist veilige inspectie.', wet:''},
+      {title:'Glycol analyseren op pH en vriesgedrag', freq:'Elke 2-3 jaar', why:'Gecorrodeerde vloeistof vernietigt leidingen en collector.', wet:''},
+      {title:'Expansievat voor-spanning controleren', freq:'1x per jaar', why:'Onjuiste voor-spanning veroorzaakt drukverlies en pompschade.', wet:''},
+      {title:'Boiler anode inspecteren', freq:'1x per jaar', why:'Beschermt de binnenzijde van uw boiler tegen corrosie.', wet:''}
+    ]}
+  }
+};
+
+// ── RENDER HELPERS ────────────────────────────────────────────────────────────
+
+function renderPage(pageId) {
+  var d = PAGES[pageId];
+  if (!d) return '<p>Pagina niet gevonden.</p>';
+
+  var wHtml = '';
+  for (var i = 0; i < d.warns.length; i++) {
+    var w = d.warns[i];
+    wHtml += '<div class="warn warn-' + w.t + '"><span class="warn-icon">' + w.ic + '</span><span>' + w.tx + '</span></div>';
+  }
+
+  var ic = {green:'✓', orange:'⚠', red:'⛔', blue:'💡'};
+  var diyHtml = '';
+  for (var ti = 0; ti < d.diy.tasks.length; ti++) {
+    var t = d.diy.tasks[ti];
+    var stepsHtml = '';
+    for (var si = 0; si < t.steps.length; si++) {
+      stepsHtml += '<li data-n="' + (si+1) + '">' + t.steps[si] + '</li>';
+    }
+    var tipsHtml = '';
+    for (var tpi = 0; tpi < (t.tips||[]).length; tpi++) {
+      var tp = t.tips[tpi];
+      tipsHtml += '<div class="tip"><div class="tip-lbl ' + tp.cl + '">' + (ic[tp.cl]||'💡') + ' ' + tp.l + '</div><div class="tip-body">' + tp.tx + '</div></div>';
+    }
+    var taskKey = pageId + '_' + ti;
+    diyHtml += '<div class="task" id="task_' + taskKey + '">' +
+      '<div class="task-hd" onclick="togTask(\'' + taskKey + '\')">' +
+        '<span class="freq ' + t.fc + '">' + t.freq + '</span>' +
+        '<div><div class="task-title">' + t.title + '</div><div class="task-short">' + t.short + '</div></div>' +
+        '<span class="chev">▾</span>' +
+      '</div>' +
+      '<div class="task-det">' +
+        '<div class="steps-lbl">✓ Stap voor stap</div>' +
+        '<ul class="steps">' + stepsHtml + '</ul>' +
+        tipsHtml +
+      '</div>' +
+    '</div>';
+  }
+
+  var proHtml = '';
+  for (var pi = 0; pi < d.pro.tasks.length; pi++) {
+    var pt = d.pro.tasks[pi];
+    proHtml += '<div class="pro-item">' +
+      '<div class="pro-dot"></div>' +
+      '<div>' +
+        '<div class="pro-title">' + pt.title + '</div>' +
+        '<div class="pro-why">' + pt.why + '</div>' +
+        (pt.wet ? '<span class="pro-wet">' + pt.wet + '</span>' : '') +
+      '</div>' +
+      '<div class="pro-freq">' + pt.freq + '</div>' +
+    '</div>';
+  }
+
+  return '<span class="page-em">' + d.em + '</span>' +
+    '<h2 class="page-title">' + d.name + '</h2>' +
+    '<p class="page-intro">' + d.intro + '</p>' +
+    wHtml +
+    '<div class="block block-diy">' +
+      '<div class="block-head"><span class="bh-icon">🙋</span><div><div class="bh-title">' + d.diy.title + '</div><div class="bh-sub">' + d.diy.sub + '</div></div></div>' +
+      '<div class="block-body">' + diyHtml + '</div>' +
+    '</div>' +
+    '<div class="block block-pro">' +
+      '<div class="block-head"><span class="bh-icon">🔧</span><div><div class="bh-title">' + d.pro.title + '</div><div class="bh-sub">' + d.pro.sub + '</div></div></div>' +
+      '<div class="block-body">' + proHtml + '</div>' +
+    '</div>' +
+    '<div class="footer-cta"><p>Vragen of een onderhoudsbezoek plannen?</p><p>Uw installateur staat voor u klaar — gebruik de AI-knop rechtsonder ✦</p></div>';
+}
+
+function renderInverterPicker() {
+  var cardsHtml = '';
+  for (var i = 0; i < INVERTERS.length; i++) {
+    var inv = INVERTERS[i];
+    cardsHtml += '<div class="inv-card" data-inv="' + inv.id + '">' +
+      '<div class="inv-card-name">' + inv.name + '</div>' +
+      '<div class="inv-card-brand">' + inv.brand + '</div>' +
+      '<div class="inv-card-desc">' + inv.desc + '</div>' +
+    '</div>';
+  }
+  return '<span class="page-em">☀️</span>' +
+    '<h2 class="page-title">Zonnepanelen</h2>' +
+    '<p class="page-intro" style="margin-bottom:24px">Welk type omvormer heeft u? Kijk op het kastje in uw meterkast of technische ruimte.</p>' +
+    '<div class="inv-pick-title">Kies uw omvormer-type</div>' +
+    '<div class="inv-grid" onclick="handleInvClick(event)">' + cardsHtml + '</div>' +
+    '<p class="inv-hint">Weet u het niet zeker? Uw installateur staat u graag te woord ✦</p>';
+}
+
+function renderInverterDetail(invId) {
+  return '<button class="back-inv" onclick="showInverterPicker()">← Terug naar omvormer keuze</button>' +
+    renderPage(invId);
+}
+
+// ── STATE & NAV ───────────────────────────────────────────────────────────────
+
+var sel = [];
+var aiOpen = false;
+var aiHist = [];
+var aiLoad = false;
+
+// Build onboarding grid
+(function() {
+  var grid = document.getElementById('tgrid');
+  var html = '';
+  for (var i = 0; i < TECHS.length; i++) {
+    var t = TECHS[i];
+    html += '<div class="tc" data-id="' + t.id + '" onclick="pickTech(this)">' +
+      '<span class="tc-em">' + t.em + '</span>' +
+      '<div class="tc-name">' + t.name + '</div>' +
+      '<div class="tc-brand">' + t.brand + '</div>' +
+    '</div>';
+  }
+  grid.innerHTML = html;
+})();
+
+function pickTech(el) {
+  var id = el.getAttribute('data-id');
+  var idx = sel.indexOf(id);
+  if (idx >= 0) {
+    sel.splice(idx, 1);
+    el.classList.remove('sel');
+  } else {
+    sel.push(id);
+    el.classList.add('sel');
+  }
+  document.getElementById('start-btn').disabled = sel.length === 0;
+}
+
+function start() {
+  document.getElementById('onb').style.display = 'none';
+  document.getElementById('back-btn').style.display = 'block';
+  document.getElementById('guide').classList.add('on');
+
+  // Build nav tabs
+  var navHtml = '';
+  for (var i = 0; i < sel.length; i++) {
+    var tech = null;
+    for (var j = 0; j < TECHS.length; j++) {
+      if (TECHS[j].id === sel[i]) { tech = TECHS[j]; break; }
+    }
+    if (tech) {
+      navHtml += '<div class="gt' + (i===0?' on':'') + '" id="nt_' + tech.id + '" onclick="switchPage(\'' + tech.id + '\')">' + tech.em + ' ' + tech.name + '</div>';
+    }
+  }
+  document.getElementById('gnav').innerHTML = navHtml;
+
+  // Build pages
+  var pagesHtml = '';
+  for (var i = 0; i < sel.length; i++) {
+    var id = sel[i];
+    var tech = null;
+    for (var j = 0; j < TECHS.length; j++) {
+      if (TECHS[j].id === id) { tech = TECHS[j]; break; }
+    }
+    if (!tech) continue;
+    var content = tech.inverterPick ? renderInverterPicker() : renderPage(id);
+    pagesHtml += '<div class="page' + (i===0?' on':'') + '" id="pg_' + id + '">' + content + '</div>';
+  }
+  document.getElementById('pages').innerHTML = pagesHtml;
+}
+
+function goBack() {
+  document.getElementById('onb').style.display = 'block';
+  document.getElementById('back-btn').style.display = 'none';
+  document.getElementById('guide').classList.remove('on');
+}
+
+function switchPage(id) {
+  document.querySelectorAll('.gt').forEach(function(e) { e.classList.remove('on'); });
+  document.querySelectorAll('.page').forEach(function(e) { e.classList.remove('on'); });
+  var nt = document.getElementById('nt_' + id);
+  var pg = document.getElementById('pg_' + id);
+  if (nt) nt.classList.add('on');
+  if (pg) { pg.classList.add('on'); window.scrollTo({top:0, behavior:'smooth'}); }
+}
+
+function handleInvClick(e) {
+  var card = e.target.closest('.inv-card');
+  if (card) pickInverter(card.getAttribute('data-inv'));
+}
+
+function pickInverter(invId) {
+  var pg = document.getElementById('pg_zon');
+  if (pg) pg.innerHTML = renderInverterDetail(invId);
+}
+
+function showInverterPicker() {
+  var pg = document.getElementById('pg_zon');
+  if (pg) pg.innerHTML = renderInverterPicker();
+}
+
+function togTask(key) {
+  var el = document.getElementById('task_' + key);
+  if (el) el.classList.toggle('open');
+}
+
+// ── AI ────────────────────────────────────────────────────────────────────────
+var SYS = 'Je bent de vriendelijke klantenassistent van een Belgisch installatiebedrijf. Je spreekt met een eindklant. Gebruik begrijpelijke taal, geen vakjargon. Beantwoord vragen over onderhoud van zonnepanelen, thuisbatterijen, laadpalen, warmtepompen, ventilatiesystemen en zonneboilers. Sluit af: bij twijfel altijd uw installateur contacteren. Max 200 woorden. Antwoord in het Nederlands.';
+
+function toggleAI() {
+  aiOpen = !aiOpen;
+  document.getElementById('ai-panel').classList.toggle('on', aiOpen);
+  if (aiOpen) setTimeout(function() { document.getElementById('ai-inp').focus(); }, 80);
+}
+
+function addb(role, html) {
+  var c = document.getElementById('ai-msgs');
+  var d = document.createElement('div');
+  d.className = 'ai-bub ' + role;
+  d.innerHTML = html;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+  return d;
+}
+
+async function sendAI() {
+  if (aiLoad) return;
+  var inp = document.getElementById('ai-inp');
+  var txt = inp.value.trim();
+  if (!txt) return;
+  inp.value = '';
+  document.getElementById('ai-quick').style.display = 'none';
+  addb('usr', txt);
+  aiHist.push({role:'user', content:txt});
+  aiLoad = true;
+  var typ = addb('bot', '<div class="dots"><span></span><span></span><span></span></div>');
+  try {
+    var r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-20250514', max_tokens:1000, system:SYS, messages:aiHist})
+    });
+    var data = await r.json();
+    var reply = (data.content && data.content[0]) ? data.content[0].text : 'Geen antwoord ontvangen.';
+    aiHist.push({role:'assistant', content:reply});
+    typ.innerHTML = reply
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/^- (.+)$/gm, '<li>$1</li>')
+      .replace(/(<li>.*<\/li>\n?)+/gs, function(m) { return '<ul>' + m + '</ul>'; })
+      .replace(/\n\n/g, '<br><br>')
+      .replace(/\n/g, '<br>');
+  } catch(e) {
+    typ.innerHTML = 'Verbindingsprobleem. Probeer het later opnieuw.';
+  }
+  aiLoad = false;
+}
+
+function qsend(btn) {
+  document.getElementById('ai-inp').value = btn.textContent;
+  sendAI();
+}
+</script>
+</body>
+</html>
